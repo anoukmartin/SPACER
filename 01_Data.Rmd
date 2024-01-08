@@ -24,11 +24,10 @@ Objectifs:
 
 ```{r pkg_wd}
 
+
+install.packages("openxlsx")
+library(openxlsx)
 library(dplyr)
-library(ggplot2)
-
-
-setwd("C:/Users/romai/Documents/ens_ulm/cours/SPACER/2024/")
 
 
 ```
@@ -40,15 +39,16 @@ setwd("C:/Users/romai/Documents/ens_ulm/cours/SPACER/2024/")
 ## 1.1. Chargement
 
 ```{r data}
-# Table des résultats
-elec <- read.csv("resultats22t1.csv", sep = ";", header = TRUE, colClasses=c("Code.de.la.commune"="character"))
 
-# Nettoyage de la table
+dataURL <- "https://www.data.gouv.fr/fr/datasets/r/6d9b33e5-667d-4c3e-9a0b-5fdf5baac708"
+elec <- read.xlsx(dataURL,sheet=1)
+names(elec)
 
-elec <- elec %>% 
-  rename(ART_V_E = X..Voix.Exp) %>% 
-  select(-N.Panneau,-Sexe, -Prénom, -Nom, -Voix, -X..Voix.Ins)
+vars_candidats <- c("N°Panneau", "Sexe", "Nom", "Prénom", "Voix", "%.Voix/Ins", "%.Voix/Exp")
+candidats <- c("ARTHAUD", "ROUSSEL", "MACRON", "LASSALLE", "LE_PEN", "ZEMMOUR", "MELENCHON", "HIDALGO", "JADOT", "PECRESSE", "POUTOU", "DUPONT-AIGNAN")
 
+names_corr <- lapply(candidats, function(x){paste0(x, "_", vars_candidats)})
+names_corr <- rbind(names_corr)
 
 ```
 
@@ -57,10 +57,10 @@ elec <- elec %>%
 
 ```{r data_geofilter}
 
-# Extraction des communes faisant partie de l'IDF
-
-elec_idf <- elec %>% 
-  filter(Code.du.département %in% c("75", "77", "78", "91", "92", "93", "94", "95"))
+# Extraction de PACA 
+unique(elec$Code.du.département)
+elec_paca <- elec %>% 
+  filter(Code.du.département %in% c("04", "05", "06", "13", "83", "84"))
 
 
 
