@@ -109,7 +109,7 @@ freq(is.na(elec_paca$taux_pauvrete_60))
 
 
 # Nettoyage ###################################################################
-rm(candidats)
+
 rm(dataURL)
 rm(names_corr)
 rm(names_new)
@@ -157,4 +157,8 @@ class(comsf_paca)
 rm(comsf)
 
 
+depsf <- st_read(dsn = "geometry/DEPARTEMENT.shp", 
+                 stringsAsFactors = F)
+depsf_paca <-  depsf %>%
+  filter(INSEE_DEP %in% c("04", "05", "06", "13", "83", "84"))
 
