@@ -78,7 +78,7 @@ topbot <- bind_rows(top, bot)
 
 # carte
 
-mf_map(comsf_idf, 
+mf_map(comsf_paca, 
        var = "MEL_V_E", 
        type = "choro", 
        breaks = "quantile",
@@ -112,17 +112,17 @@ mf_layout(title = "Les discontinuités politiques les plus fortes en Ile de Fran
 
 
 # création d'une grille de points régulière pour lesquels seront calculées les valeurs de la variable
-y <- create_grid(x = comsf_idf, res = 5000)
+y <- create_grid(x = comsf_paca, res = 5000)
 
 # création d'une matrice de distance entre les points d'origine (centroides des communes), et les points de la grille
-d <- create_matrix(x = comsf_idf, y = y)
+d <- create_matrix(x = comsf_paca, y = y)
 
 # calcul du potentiel
 # fun = exponentielle
 # span = distance à laquelle la valeur vaut 50% de celle du point d'origine
 # beta = exposant de la distance 
 
-y$pot <- potential(x = comsf_idf, y = y, d = d,
+y$pot <- potential(x = comsf_paca, y = y, d = d,
                    var = "LEP_V_E", fun = "e",
                    span = 3000, beta = 2)
 
